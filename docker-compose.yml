@@ -1,0 +1,47 @@
+version: '3'
+services:
+  smp-server:
+    image: simplexchat/smp-server:latest
+    container_name: smp-server
+    restart: always
+    ports:
+      - 5223:5223
+    volumes:
+      - ./config/smp/config:/etc/opt/simplex:z
+      - ./config/smp/logs:/var/opt/simplex:z 
+    depends_on:
+      - xftp-server
+    environment:
+      PASS: pass987654
+      ADDR: simplex.cobradev.v6.rocks
+
+  xftp-server:
+    image: simplexchat/xftp-server:latest
+    container_name: xftp-server
+    restart: always
+    ports:
+      - '443:443'
+    volumes:
+      - ./config/xftp/files:/srv/xftp:z
+      - ./config/xftp/logs:/var/opt/simplex-xftp:z
+      - ./config/xftp/config:/etc/opt/simplex-xftp:z
+    environment:
+      QUOTA: 20gb
+      ADDR: simplex.cobradev.v6.rocks
+
+  coturn-server:
+    image: coturn/coturn:latest
+    container_name: cotrun-server
+    restart: always
+    ports:
+      - 3478:3478
+      - 3478:3478/udp
+      - 5349:5349
+      - 5349:5349/udp
+      # - 49152-65535:49152-65535/udp
+    volumes:
+      - ./config/coturn/turnserver.conf:/etc/coturn/turnserver.conf
+      - ./config/cert/privkey.pem:/etc/ssl/private/privkey.pem:ro
+      - ./config/cert/cert.pem:/etc/ssl/certs/cert.pem:ro
+    depends_on:
+      - smp-server
