@@ -1,4 +1,3 @@
-version: '3'
 services:
   smp-server:
     image: simplexchat/smp-server:latest
@@ -13,7 +12,7 @@ services:
       - xftp-server
     environment:
       PASS: pass987654
-      ADDR: simplex.cobradev.v6.rocks
+      ADDR: example.com
 
   xftp-server:
     image: simplexchat/xftp-server:latest
@@ -27,7 +26,7 @@ services:
       - ./config/xftp/config:/etc/opt/simplex-xftp:z
     environment:
       QUOTA: 20gb
-      ADDR: simplex.cobradev.v6.rocks
+      ADDR: example.com
 
   coturn-server:
     image: coturn/coturn:latest
@@ -38,10 +37,8 @@ services:
       - 3478:3478/udp
       - 5349:5349
       - 5349:5349/udp
-      # - 49152-65535:49152-65535/udp
+      - 49152-50000:49152-50000/udp
     volumes:
       - ./config/coturn/turnserver.conf:/etc/coturn/turnserver.conf
       - ./config/cert/privkey.pem:/etc/ssl/private/privkey.pem:ro
       - ./config/cert/cert.pem:/etc/ssl/certs/cert.pem:ro
-    depends_on:
-      - smp-server

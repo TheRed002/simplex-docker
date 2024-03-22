@@ -1,0 +1,9 @@
+ca.crt
+ca.key
+file-server.ini
+fingerprint
+openssl_ca.conf
+openssl_server.conf
+server.crt
+server.csr
+server.key
