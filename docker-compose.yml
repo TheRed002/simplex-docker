@@ -40,5 +40,5 @@ services:
       - 49152-50000:49152-50000/udp
     volumes:
       - ./config/coturn/turnserver.conf:/etc/coturn/turnserver.conf
-      - ./config/cert/privkey.pem:/etc/ssl/private/privkey.pem:ro
-      - ./config/cert/cert.pem:/etc/ssl/certs/cert.pem:ro
+      - ./config/coturn/cert/privkey.pem:/etc/ssl/private/privkey.pem:ro
+      - ./config/coturn/cert/cert.pem:/etc/ssl/certs/cert.pem:ro
